@@ -1,7 +1,26 @@
 import { BellIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 function Header() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return (
-    <header>
+    <header className={`${isScrolled && "bg-[#141414]"}`}>
       <div className="flex items-center space-x-2 md:space-x-10">
         <img
           src="/netflix_logo.svg"
@@ -20,10 +39,19 @@ function Header() {
           <li className="headerLink">My List</li>
         </ul>
       </div>
-      <div>
+      <div className="flex items-center space-x-4 text-sm font-light">
         <MagnifyingGlassIcon className="hidden h-6 w-6 sm:inline" />
         <p className="hidden lg:inline">Kids</p>
         <BellIcon className="h-6 w-6" />
+        <Link href="/account">
+          <img
+            src="/netflix-avatar.png"
+            alt="Netflix avatar"
+            width={25}
+            height={25}
+            className="cursor-pointer rounded"
+          />
+        </Link>
       </div>
     </header>
   );
